@@ -1,3 +1,7 @@
+# reflix
+Projeto com base no treinamento Imersão React da Alura
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
