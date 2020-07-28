@@ -23,3 +23,10 @@ body {
 a {
   color: inherit;
 } 
+
+/* Estilo para manter o rodapé sempre colado na base da tela */
+#root {
+  min-height: calc(100vh - var(--bodyPaddingTop));
+  display: flex;
+  flex-direction: column;
+}
