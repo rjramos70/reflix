@@ -20,11 +20,13 @@ const Container = styled.ul`
     }
   }
   
-  .slick-prev {
+  .slick-prev:before {
     left: 0;
+    color: yellow;
   }
-  .slick-next {
+  .slick-next:before {
     right: 16px;
+    color: aquamarine;
   }
 `;
 
@@ -38,8 +40,8 @@ export const SliderItem = styled.li`
   }
 `;
 
+const Slider = ( { children } ) => (
 
-const Slider = ({ children }) => (
   <Container>
     <SlickSlider {...{
       dots: false,
