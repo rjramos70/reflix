@@ -52,7 +52,11 @@ function CadastroCategoria(){
    // Componente vai ser chamado quando quisermos que um efeito colateral aconteça
    useEffect(() => {
         // O que deve acontecer
-        const URL = 'http://localhost:8080/categorias';
+        // const URL = 'http://localhost:8080/categorias';
+
+        const URL = window.location.hostname.includes('localhost') 
+            ? 'http://localhost:8080/categorias'
+            : 'https://reflix-app-server.herokuapp.com/categorias';
 
         fetch(URL)
             .then(async (respostaDoServidor) => {
