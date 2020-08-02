@@ -1,12 +1,73 @@
 import React from 'react';
-
+import { Link, useHistory } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
-import { Link } from 'react-router-dom';
+import useForm from '../../../hooks/useForm';
+import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
+import videosRepository from '../../../repositories/videos';
+
+import '../formularios.css';
 
 function CadastroVideo(){
+    
+    const history = useHistory();
+
+    const { handleChange, values } = useForm({
+        titulo: 'CS:GO - Essential Mutiny Smokes',
+        url: 'https://www.youtube.com/watch?v=MM8hprY5t9E',
+        categoria: 'Games',
+
+    });
+      
+    // [ Funções ]
+    // [ Create - Video ]
+    function handleSubmit(props){
+        props.preventDefault();   
+
+        videosRepository.create({
+            titulo: values.titulo,
+            url: values.url,
+            categoriaId: 5,
+        })
+        .then(() => {
+            console.log(`Cadastro com sucesso!`)
+            // Redireciona para a home
+            history.push('/');    
+        })
+        .catch((err) => {
+            alert(`Error :: ${err}`);
+        });
+
+    }
+
     return (
         <PageDefault >
-            <h1>Cadastro de Vídeo</h1>
+            <h1 className="cabecalho">Cadastro de Vídeo</h1>
+            <form onSubmit={ handleSubmit } >
+
+                <FormField
+                    label="Título do Vídeo"
+                    name="titulo"
+                    value={values.titulo}
+                    onChange={handleChange}
+                />
+
+                <FormField
+                    label="URL"
+                    name="url"
+                    value={values.url}
+                    onChange={handleChange}
+                />
+
+                <FormField
+                    label="Categoria"
+                    name="categoria"
+                    value={values.categoria}
+                    onChange={handleChange}               
+                />
+
+               <Button className="botao">Cadastrar</Button>
+            </form>
 
             <Link to="/cadastro/categoria">
                 Cadastro de Categoria
