@@ -15,9 +15,9 @@ function CadastroVideo(){
     const [categorias, setCategorias] = useState([]);
     const categoryTitles = categorias.map(({ titulo }) => titulo);
     const { handleChange, values } = useForm({
-        titulo: 'CS:GO - Essential Mutiny Smokes',
-        url: 'https://www.youtube.com/watch?v=MM8hprY5t9E',
-        categoria: 'Games',
+        titulo: '',
+        url: '',
+        categoria: '',
 
     });
       
@@ -32,9 +32,6 @@ function CadastroVideo(){
                 alert('Erro ao buscar a lista de categorias do formulário');
             }); 
     }, []);
-
-    console.log(`categoryTitles:: `);
-    console.log(categoryTitles);
 
     // [ Funções ]
     // [ Create - Video ]
