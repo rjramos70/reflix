@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+// import { Link } from 'react-router-dom';
 import { Link, useHistory } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import useForm from '../../../hooks/useForm';
@@ -6,10 +7,28 @@ import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
 import videosRepository from '../../../repositories/videos';
 import categoriasRepository from '../../../repositories/categorias';
-
+import {  notifyError } from '../../../components/messages/toastMessages';
 import '../formularios.css';
 
+
+
 function CadastroVideo(){
+
+    function redirecionaPara(path){
+        return setTimeout(() => {
+            console.log(`Redirecionando para '${path}'.`);
+            history.push(path);  
+        }, 5500);   
+    }
+
+
+    // const notifyError = () => toast.error(`Error message !`);
+    // const notifyInfo = () => toast.info("Info message !");
+    // const notifySuccess = () => toast.success("Cadastro realizado com sucesso !");
+    // const notifyWarn = () => toast.warn("Warn message!");
+    // const notifyDefault = () => toast("Default message !");
+    // const notifyDark = () => toast.dark("Dark message !");
+  
     
     const history = useHistory();
     const [categorias, setCategorias] = useState([]);
@@ -21,6 +40,7 @@ function CadastroVideo(){
 
     });
       
+
     useEffect(() => {
         categoriasRepository
             .getAll()
@@ -47,13 +67,15 @@ function CadastroVideo(){
             url: values.url,
             categoriaId: categoriaEscolhida.id,
         })
-        .then(() => {
-            console.log(`Cadastro com sucesso!`)
-            // Redireciona para a home
-            history.push('/');    
+        .then((resp) => {
+            if(resp !== undefined){
+                console.log(`Cadastro com sucesso!`);
+                redirecionaPara('/');
+            }
         })
         .catch((err) => {
             alert(`Error :: ${err}`);
+            notifyError('Erro ao cadastrar o vídeo!');
         });
 
     }
@@ -91,6 +113,34 @@ function CadastroVideo(){
             <Link to="/cadastro/categoria">
                 Cadastro de Categoria
             </Link>
+            
+            <br/>
+            <br/>
+
+            <div>
+                {/* <li>
+                    <button onClick={notifyError}>notifyError</button>
+                </li>
+                <li>
+                    <button onClick={notifyInfo}>notifyInfo</button>
+                </li>
+                <li>
+                    <button onClick={notifySuccess}>notifySuccess</button>
+                </li>
+                <li>
+                    <button onClick={notifyWarn}>notifyWarn</button>
+                </li>
+                <li>
+                    <button onClick={notifyDefault}>notifyDefault</button>
+                </li>
+                <li>
+                    <button onClick={notifyDark}>notifyDark</button>
+                </li> */}
+
+
+                {/* <ToastContainer /> */}
+            </div>
+
 
         </PageDefault>
     );

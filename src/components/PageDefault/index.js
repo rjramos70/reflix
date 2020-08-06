@@ -2,6 +2,9 @@ import React from 'react';
 import Menu from '../Menu';
 import Footer from '../Footer';
 import styled, { css } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Main = styled.main`
     background-color: var(--black);
@@ -21,6 +24,7 @@ function PageDefault({ children, paddingAll }){
             <Menu />
                 <Main paddingAll={paddingAll}>
                     {children}
+                    <ToastContainer/>
                 </Main>
             <Footer />
         </>

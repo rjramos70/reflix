@@ -10,6 +10,8 @@ const Table = ({ columns, data, headerStyle, rowStyle }) => {
         prepareRow
     } = useTable({ columns, data});
 
+    // console.log(`DATA :: ${JSON.stringify(data)}`);
+
     return (
         <table {...getTableProps()} style={ { paddingTop: 20, paddingBottom: 10, width: '100%' }}>
           <thead style={ headerStyle }>
@@ -25,9 +27,10 @@ const Table = ({ columns, data, headerStyle, rowStyle }) => {
             {rows.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} style={ rowStyle }>
+                <tr {...row.getRowProps()}>
                   {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()} >{cell.render("Cell")}</td>;
+                    // console.log('cell.render("Cell") :: ', JSON.stringify(cell.getCellProps()));
+                    return <td {...cell.getCellProps()}  style={ rowStyle } >{cell.render("Cell")}</td>;
                   })}
                 </tr>
               );

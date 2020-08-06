@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
  
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
@@ -8,6 +8,7 @@ import Button from '../../../components/Button';
 import useForm from '../../../hooks/useForm';
 
 import categoriasRepository from '../../../repositories/categorias';
+import {  notifyError } from '../../../components/messages/toastMessages';
 import Table from '../../../components/Table';
 
 import '../formularios.css';
@@ -23,43 +24,37 @@ function CadastroCategoria(){
         }
     }
     
+    // declara a classe Categoria com os seus atributos
+    const valoresIniciais = {
+        titulo: '',
+        descricao: '',
+        cor: '',
+    }
+
+    // [ Constantes ]
+    const [categorias, setCategorias] = useState([]);   
     const [dados, setDados] = useState([]);
-        
+    const { handleChange, values, clearForm } = useForm(valoresIniciais);
+    
     useEffect(() => {
         categoriasRepository.getAll()
           .then((dado) => {
+            if(dado !== undefined){
                 setDados(dado);
+            }    
           })
           .catch((err) => {
             console.log(err.message);
-            alert(err.message);
+            notifyError(err.message);
           });
-    }, 
-        [ 
-            /* 
-            ALERTA: se não for colocar estes colchetes as requisições ficarão 
-            em loop infinito 
-            */
-        ]
-    );
-
-    // URL categorias
-    const URL = categoriasRepository.getUrlCategorias();
+    },[]);
        
-    // declara a classe Categoria com os seus atributos
-    const valoresIniciais = {
-       titulo: '',
-       descricao: '',
-       cor: '',
+    function refreshPage(){   
+        return setTimeout(() => {
+            console.log(`Recarregando a página.`);
+            window.location.reload(false);           
+        }, 5500);   
     }
-  
-    // [ Constantes ]
-    // lista 'categorias', setter 'setCategorias'
-    const [categorias, setCategorias] = useState([]);
-    // lista de componentes retornadas do useForm em forma de um objeto
-    const { handleChange, values, clearForm } = useForm(valoresIniciais);
-    
-    const history = useHistory();
 
     const columns = [
         {
@@ -76,6 +71,10 @@ function CadastroCategoria(){
                 {
                     Header: "Cor",
                     accessor: "cor"
+                },
+                {
+                    Header: "Remove",
+                    accessor: "remove"
                 }
             ]
         }
@@ -91,29 +90,23 @@ function CadastroCategoria(){
         categoriaDTO.cor = values.cor;
         categoriaDTO.link_extra.text = values.descricao;
 
+        categoriasRepository.create(categoriaDTO)
+        .then((resp) => {
+            if(resp !== undefined){
+                console.log(`Cadastro com sucesso!`);
+                refreshPage();
+            }
+        })
+        .catch((err) => {
+            alert(`Error :: ${err}`);
+            notifyError('Erro ao cadastrar a categoria!');
+        });
 
-        try{
-            await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(categoriaDTO),
-            });
-        } catch (error) {
-            let msg = 'Erro ao cadastrar a nova categoria';
-            console.log(`${msg} - ${error}`);
-            // alert(msg);
-        }
-        
         // insere 'values' na lista 'categorias'
         setCategorias([
             ...categorias,
             values
         ]);
-    
-        history.push('/cadastro/categoria');
 
         // function que limpa o Form
         clearForm();
@@ -138,19 +131,19 @@ function CadastroCategoria(){
     //     // }
     // }
 
-
-    // Componente vai ser chamado quando quisermos que um efeito colateral aconteça
     useEffect(() => {
-        fetch(URL)
-          .then(async (response) => {
-            if (response.ok) {
-              const result = await response.json();
-              setCategorias(result);
-              return;
-            }
-            throw new Error('Não foi possível pegar os dados');
-          }); 
-    }, [URL]);
+        categoriasRepository
+            .getAll()
+            .then((categoriasFromServer) => {
+                if(categoriasFromServer !== undefined){
+                    setCategorias(categoriasFromServer);
+                }
+            })
+            .catch((err) => {
+                console.log(`ERROR :: ${err}`);
+                notifyError('Erro ao buscar a lista de categorias do formulário');
+            }); 
+    }, []);
 
    return (
        <PageDefault >
@@ -195,13 +188,15 @@ function CadastroCategoria(){
                     <Table 
                         columns={columns} 
                         data={dados} 
-                        headerStyle={ { background:  '#4c4e4e', 'fontSize': '15px' } } 
+                        headerStyle={ { background:  '#4c4e4e', fontSize: '15px' } } 
                         rowStyle={{ 
                             background: '#ebc251', 
-                            'fontSize': '13px', 
-                            'borderLeftWidth': '1px',
-                            'minWidth': '120px', 
-                            height: '18px' 
+                            fontSize: '13px', 
+                            borderLeftWidth: '1px',
+                            minWidth: '120px', 
+                            height: '18px',
+                            color: '#000000',
+                            paddingLeft: '5px',
                         }}
                     />
                 </div>

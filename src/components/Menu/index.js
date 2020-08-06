@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Logo from '../../assets/img/Logo150.png'
 import './Menu.css';
 //import ButtonLink from './components/ButtonLink';
-import Button from '../Button'
+import Button from '../Button';
  
  
 function Menu() {

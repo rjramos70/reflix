@@ -40,24 +40,6 @@
         "text": "Formação de Jogos na Alura",
         "url": "https://www.alura.com.br/cursos-online-front-end"
       }
-    },
-    {
-      "titulo": "Cinema",
-      "cor": "#01e8f9",
-      "link_extra": {
-        "text": "Formação completa de direção artística para Cinema",
-        "url": ""
-      },
-      "id": 6
-    },
-    {
-      "titulo": "Malhação",
-      "cor": "#f901f0",
-      "link_extra": {
-        "text": "Melhores cursos de musculação",
-        "url": ""
-      },
-      "id": 7
     }
   ],
   "videos": [
@@ -204,12 +186,6 @@
       "categoriaId": 5,
       "titulo": "Resident Evil 8",
       "url": "https://www.youtube.com/watch?v=JSapXD9vxYA"
-    },
-    {
-      "titulo": "CS:GO - Essential Mutiny Smokes",
-      "url": "https://www.youtube.com/watch?v=MM8hprY5t9E",
-      "categoriaId": 5,
-      "id": 25
     }
   ]
 }

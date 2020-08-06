@@ -1,5 +1,8 @@
 import config from '../config';
 
+// import { notifySuccess, notifyError } from '../components/messages/toastMessages';
+import { getMessageByHttpStatus } from '../components/messages/httpStatusMessage'
+
 const URL_VIDEOS = `${config.URL_BACKEND_DOMINIO}/videos`;
 
 function getUrlVideos(){
@@ -15,16 +18,23 @@ function create(objetoVideo){
         body: JSON.stringify(objetoVideo),
     })
     .then(async (resposta) => {
+      getMessageByHttpStatus(resposta.status);
+      
       if(resposta.ok){
         const result = await resposta.json();
+        
         return result;
       }
+      
     });
 }
 
 function getAll(){
     return fetch(URL_VIDEOS)
       .then(async (response) => {
+        if(response.status >= 300){
+          getMessageByHttpStatus(response.status);
+        }
         if (response.ok) {
           const result = await response.json();
           
